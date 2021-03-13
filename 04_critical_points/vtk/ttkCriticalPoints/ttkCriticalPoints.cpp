@@ -4,15 +4,6 @@
 using namespace std;
 using namespace ttk;
 
-unsigned char red[3] = {255, 0, 0};
-unsigned char green[3] = {0, 255, 0};
-unsigned char blue[3] = {0, 0, 255};
-
-// Setup the colors array
-// vtkSmartPointer<vtkUnsignedCharArray> colors = vtkSmartPointer<vtkUnsignedCharArray>::New();
-// colors->SetNumberOfComponents(3);
-// colors->SetName("Colors");
-
 vtkStandardNewMacro(ttkCriticalPoints)
 
 int ttkCriticalPoints::doIt(vector<vtkDataSet *> &inputs, vector<vtkDataSet *> &outputs){
