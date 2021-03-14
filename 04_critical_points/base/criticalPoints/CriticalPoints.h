@@ -201,8 +201,7 @@ template <class dataType> int ttk::CriticalPoints::get_components_link(SimplexId
         field_v2 = is_lower_link ? -inputData[v2] : inputData[v2];
         field_v3 = is_lower_link ? -inputData[v3] : inputData[v3];
 
-        if (field_v1 > field_v && field_v2 > field_v && field_v3 > field_v){
-
+        if (field_v1 > field_v && field_v2 > field_v){
           if (vertex_to_set[v1] != vertex_to_set[v2]){
             int label = vertex_to_set[v2];
             for (auto vs : *set_to_vertices[vertex_to_set[v2]]){
@@ -211,7 +210,9 @@ template <class dataType> int ttk::CriticalPoints::get_components_link(SimplexId
             }
             set_to_vertices.erase(label);
           }
+        }
 
+        if (field_v1 > field_v && field_v3 > field_v){
           if (vertex_to_set[v1] != vertex_to_set[v3]){
             int label = vertex_to_set[v3];
             for (auto vs : *set_to_vertices[vertex_to_set[v3]]){
@@ -220,7 +221,9 @@ template <class dataType> int ttk::CriticalPoints::get_components_link(SimplexId
             }
             set_to_vertices.erase(label);
           }
+        }
 
+        if (field_v2 > field_v && field_v3 > field_v){
           if (vertex_to_set[v2] != vertex_to_set[v3]){
             int label = vertex_to_set[v3];
             for (auto vs : *set_to_vertices[vertex_to_set[v3]]){
@@ -229,16 +232,10 @@ template <class dataType> int ttk::CriticalPoints::get_components_link(SimplexId
             }
             set_to_vertices.erase(label);
           }
-
         }
-
     }
-
   }
 
   return set_to_vertices.size();
-
-
-
 
 };

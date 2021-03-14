@@ -68,9 +68,9 @@ int ttkCriticalPoints::doIt(vector<vtkDataSet *> &inputs, vector<vtkDataSet *> &
   for (int i = 0; i < coordinates.size(); i++){
     vtkIdType point[1];
     point[0] = i;
-    if (type[i] == 0 || type[i] == 1 || type[i] == 2){
+    // if (type[i] == 0 || type[i] == 1 || type[i] == 2){
       output->InsertNextCell(VTK_VERTEX, 1, point);
-    }
+    // }
   }
   return 0;
 }
