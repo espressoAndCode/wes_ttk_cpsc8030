@@ -48,6 +48,7 @@ namespace ttk{
           
           triangulation_->preprocessVertexNeighbors();
           triangulation_->preprocessTriangleEdges();
+          triangulation_->preprocessVertexLinks();
 
         }
         
@@ -79,6 +80,56 @@ namespace ttk{
         }
 
         return functionValue;
+      }
+
+      // template <class dataType>
+      inline vector<float> computeBarycenter(SimplexId name, uint d){
+        vector<float> coords(3);
+
+        if (d == 0){
+        triangulation_->getVertexPoint(name, coords[0], coords[1], coords[2]);
+
+        }else if (d == 1){
+        // if d = 1 then this is an edge
+        // for an edge (x1+x2)/2 (same for y and z)
+          SimplexId v1, v2;
+          vector<float> coords0(3);
+          vector<float> coords1(3);
+
+          triangulation_->getEdgeVertex(name,0,v1);
+          triangulation_->getEdgeVertex(name,1,v2);
+
+          triangulation_->getVertexPoint(v1, coords0[0], coords0[1], coords0[2]);
+          triangulation_->getVertexPoint(v2, coords1[0], coords1[1], coords1[2]);
+
+          coords[0] = (coords0[0] + coords1[0])/2;
+          coords[1] = (coords0[1] + coords1[1])/2;
+          coords[2] = (coords0[2] + coords1[2])/2;
+
+        }else if (d == 2){
+        // if d = 2 then this is a triangle
+        // for a triangle (x1+x2+x3)/3 (same for y and z)
+          SimplexId v1, v2, v3;
+          vector<float> coords0(3);
+          vector<float> coords1(3);
+          vector<float> coords2(3);
+
+          triangulation_->getTriangleVertex(name, 0, v1);
+          triangulation_->getTriangleVertex(name, 1, v2);
+          triangulation_->getTriangleVertex(name, 2, v3);
+
+          triangulation_->getVertexPoint(v1, coords0[0], coords0[1], coords0[2]);
+          triangulation_->getVertexPoint(v2, coords1[0], coords1[1], coords1[2]);
+          triangulation_->getVertexPoint(v3, coords2[0], coords2[1], coords2[2]);
+
+          coords[0] = (coords0[0] + coords1[0] + coords2[0])/3;
+          coords[0] = (coords0[1] + coords1[1] + coords2[1])/3;
+          coords[0] = (coords0[2] + coords1[2] + coords2[2])/3;
+
+        }else{
+          //should never hit this. do nothing
+        }
+        return coords;
       }
     
     protected:
@@ -117,28 +168,26 @@ template <class dataType> int ttk::Persistence::execute(
 
     if(firstIndex < triangulation_->getNumberOfVertices()) {
       //vertex
-      cout << "\nVertex" << "\n";
       firstRealIndex = firstIndex;
-      secondRealIndex = secondIndex + triangulation_->getNumberOfVertices();
+      secondRealIndex = secondIndex - triangulation_->getNumberOfVertices();
+
 
     }else if(firstIndex < triangulation_->getNumberOfVertices()+triangulation_->getNumberOfEdges() ){
       //edge
-      cout << "\nEdge" << "\n";
-      firstRealIndex = firstIndex + triangulation_->getNumberOfVertices();
-      secondRealIndex = secondIndex + triangulation_->getNumberOfEdges();
+      firstRealIndex = firstIndex - triangulation_->getNumberOfVertices();
+      secondRealIndex = secondIndex - (triangulation_->getNumberOfVertices()+triangulation_->getNumberOfEdges());
       iSimplex = 1;
+
     }else{
       //triangle
     }
 
-    triangulation_->getVertexPoint(firstRealIndex, coords[0], coords[1], coords[2]);
+    coordinates.push_back(computeBarycenter(firstRealIndex, iSimplex));
+    coordinates.push_back(computeBarycenter(secondRealIndex, iSimplex+1));
+
     dataType persistenceValue = computeFunctionValue<dataType>(secondRealIndex, iSimplex+1) - computeFunctionValue<dataType>(firstRealIndex, iSimplex);
 
-    coordinates.push_back(coords);
     persistence.push_back(persistenceValue);
-
-
-
 
   }
 

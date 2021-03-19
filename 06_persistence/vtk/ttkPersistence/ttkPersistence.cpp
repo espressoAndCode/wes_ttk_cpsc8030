@@ -61,15 +61,12 @@ int ttkPersistence::doIt(vector<vtkDataSet *> &inputs, vector<vtkDataSet *> &out
     output->Allocate(coordinates.size()/2);
     int count=0;
     for(auto f : persistence) {
-        cout << "In finalLoop - pre\n";
         vtkIdType edge[2];
         edge[0]= count++;
         edge[1]= count++;
         output->InsertNextCell(VTK_LINE, 2, edge);
         persOutput->InsertNextTuple1(f); //preparin a list of values
-        cout << "In finalLoop - post\n";
     }
-    cout << "Finished\n";
     vtkCellData* cellData = output->GetCellData();
     cellData->AddArray(persOutput); //attaching the list to the cells in my output
 
