@@ -80,11 +80,11 @@ public:
 
   void SetVectorField(std::string name)
   {
-    if (vectorFieldPaths_ != NULL)
-    {
-      vectorFieldPaths_ = NULL;
-      VectorField.clear();
-    }
+    // if (vectorFieldPaths_ != NULL)
+    // {
+    //   vectorFieldPaths_ = NULL;
+    //   VectorField.clear();
+    // }
     VectorField.push_back(name);
     Modified();
   }
