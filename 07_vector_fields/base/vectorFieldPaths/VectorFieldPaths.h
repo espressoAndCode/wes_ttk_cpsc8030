@@ -96,7 +96,7 @@ template <class dataType> int ttk::VectorFieldPaths::execute(int steps, double d
       line.push_back(point);
       pair<float, float> newPoint;
 
-      if(pickNextVertex<dataType>(point, delta, newPoint)){
+      if(!pickNextVertex<dataType>(point, delta, newPoint)){
         break;
       }
       
@@ -154,14 +154,14 @@ void ttk::VectorFieldPaths::bilinearInterpolation(pair<float,float> point, Simpl
     t1.push_back(point);
 
     vector<pair<float, float>> t2;
-    t1.push_back(v1coords);
-    t1.push_back(v3coords);
-    t1.push_back(point);
+    t2.push_back(v1coords);
+    t2.push_back(v3coords);
+    t2.push_back(point);
 
     vector<pair<float, float>> t3;
-    t1.push_back(v1coords);
-    t1.push_back(v2coords);
-    t1.push_back(point);
+    t3.push_back(v1coords);
+    t3.push_back(v2coords);
+    t3.push_back(point);
 
     double area_t1 = triangleArea(t1);
     double area_t2 = triangleArea(t2);

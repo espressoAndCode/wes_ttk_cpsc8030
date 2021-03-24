@@ -134,8 +134,8 @@ protected:
     // Specify the number of input and output ports.
     // By default, this filter has one input and one output.
     // In this example, we define 2 inputs and 2 outputs.
-          SetNumberOfInputPorts(2);
-          SetNumberOfOutputPorts(2);
+          SetNumberOfInputPorts(1);
+          SetNumberOfOutputPorts(1);
     // end of TODO-1
   }
 
@@ -150,4 +150,5 @@ private:
   std::vector<std::string> VectorField;
   vtkDataArray *outputScalarField_;
   ttk::VectorFieldPaths vectorFieldPaths_;
+
 };
